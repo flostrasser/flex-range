@@ -1,0 +1,86 @@
+@use "sass:math";
+
+// general variables
+$fr-primary-color: hsl(0deg, 0%, 33%) !default;
+
+// bar variables
+$fr-bar-width: 0.2rem !default;
+$fr-bar-color: hsl(0deg, 0%, 80%) !default;
+$fr-bar-range-color: $fr-primary-color !default;
+
+// handle variables
+$fr-handle-size: 2rem !default;
+$fr-handle-color: white !default;
+$fr-handle-border-color: $fr-primary-color !default;
+$fr-handle-active-color: $fr-primary-color !default;
+$fr-handle-border: 0.2rem solid $fr-handle-border-color !default;
+$fr-handle-border-radius: 50% !default;
+$fr-handle-shadow: none !default;
+
+// ------------------------------------------------
+
+.range-slider {
+    box-sizing: border-box;
+    height: $fr-handle-size;
+    position: relative;
+    width: 100%;
+    user-select: none;
+
+    &::before,
+    .range-slider-bar {
+        position: absolute;
+        top: calc(50% - #{math.div($fr-bar-width, 2)});
+        left: 0;
+        width: 100%;
+        height: $fr-bar-width;
+    }
+
+    &::before {
+        content: '';
+        background-color: $fr-bar-color;
+    }
+
+    .range-slider-bar {
+        background-color: $fr-bar-range-color;
+    }
+
+    .range-slider-handle {
+        box-sizing: inherit;
+        position: absolute;
+        top: 0;
+        background-color: $fr-handle-color;
+        border: $fr-handle-border;
+        box-shadow: $fr-handle-shadow;
+        border-radius: $fr-handle-border-radius;
+        height: $fr-handle-size;
+        width: $fr-handle-size;
+        cursor: pointer;
+        transition: background-color 150ms ease-in-out;
+        transform: translateX(-50%);
+        z-index: 1;
+
+        &.from {
+            left: 0%;
+        }
+
+        &.to {
+            left: calc(100%);
+        }
+
+        &.handle-active {
+            z-index: 2;
+        }
+    }
+
+    &:not(.dragging) {
+        .range-slider-handle:hover {
+            background-color: $fr-handle-active-color;
+        }
+    }
+
+    &.dragging {
+        .range-slider-handle.handle-active {
+            background-color: $fr-handle-active-color;
+        }
+    }
+}

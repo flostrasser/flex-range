@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <title>FlexRange</title>
+
+    <link rel="stylesheet" href="./../dist/css/flex-range.css">
+
+    <style>
+        .wrapper {
+            margin: 5vmin auto;
+            width: 70vw;
+            display: grid;
+            gap: 2rem;
+        }
+
+        input[type=number] {
+            border: 2px solid #ccc;
+            font-size: 1rem;
+            max-width: 5rem;
+            padding: 0.5em 0.5em;
+        }
+    </style>
+
+    <script type="module">
+        import { FlexRange } from './../src/js/FlexRange.js';
+
+        const slider = new FlexRange('#slider');
+
+        const inputFrom = document.querySelector('#inputFrom');
+        const inputTo = document.querySelector('#inputTo');
+
+        inputFrom.value = slider.options.from;
+        inputTo.value = slider.options.to;
+
+        slider.on('change', event => {
+            inputFrom.value = event.values.from;
+            inputTo.value = event.values.to;
+        });
+
+        inputFrom.addEventListener('change', event => slider.update({ from: inputFrom.value }));
+        inputTo.addEventListener('change', event => slider.update({ to: inputTo.value }));
+
+    </script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="first-child"></div>
+
+        <input id="slider" type="range" data-min="10" data-max="30">
+
+        <div>
+            <input type="number" id="inputFrom"> — <input type="number" id="inputTo">
+        </div>
+
+        <div class="last-child"></div>
+    </div>
+</body>
+
+</html>

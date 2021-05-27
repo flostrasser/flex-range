@@ -1,0 +1,40 @@
+{
+  "name": "flex-range",
+  "version": "0.0.1",
+  "description": "A vanilla JavaScript range slider",
+  "module": "./src/js/FlexRange.js",
+  "exports": {
+    "import": "./src/js/FlexRange.js",
+    "sass": "./src/scss/flex-range.scss",
+    "style": "./dist/css/flex-range.css",
+    "default": "./src/js/FlexRange.js"
+  },
+  "style": "./dist/css/flex-range.css",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flostrasser/flex-range.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flostrasser/flex-range/issues"
+  },
+  "homepage": "https://github.com/flostrasser/flex-range#readme",
+  "scripts": {
+    "dev": "npm run watch:sass",
+    "watch:sass": "sass src/scss:dist/css --watch",
+    "build:sass": "sass src/scss:dist/css"
+  },
+  "keywords": [
+    "vanilla",
+    "slider",
+    "range",
+    "range-slider"
+  ],
+  "author": "Florian Strasser",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.34.0"
+  }
+}
