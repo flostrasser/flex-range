@@ -47,11 +47,11 @@ Example for overriding variables:
 
 ```scss
 @use 'flex-range' with (
-    $fr-primary-color: #4285f4;
-    $fr-bar-width: 0.25rem;
-    $fr-handle-size: 1.25rem;
-    $fr-handle-color: #4285f4;
-    $fr-handle-border: none;
+    $fr-primary-color: #4285f4,
+    $fr-bar-width: 0.25rem,
+    $fr-handle-size: 1.25rem,
+    $fr-handle-color: #4285f4,
+    $fr-handle-border: none,
 );
 ```
 
