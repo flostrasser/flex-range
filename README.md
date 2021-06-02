@@ -1,6 +1,16 @@
-# flex-range
+# FlexRange
 
 A flexible vanilla JavaScript range slider
+
+> Note: This is an experimental project. Don't use it in production.
+
+Known issues:
+
+-   moving the slider handles is currently not working on touch devices.
+
+### [CodePen Demo](https://codepen.io/flostrasser/pen/mdWBMrg)
+
+---
 
 ## Installation
 
@@ -8,12 +18,20 @@ A flexible vanilla JavaScript range slider
 npm install flex-range
 ```
 
+> or import from cdn: `import { FlexRange } from 'https://cdn.skypack.dev/flex-range'`
+
 ## Usage
 
 ### HTML:
 
 ```html
-<input id="slider" type="range" data-min="10" data-max="80" />
+<input id="slider" type="range" />
+```
+
+All slider options can also be set with data-attributes:
+
+```html
+<input id="slider" type="range" data-min="0" data-max="100" data-from="10" data-to="90" />
 ```
 
 ### JS:
@@ -21,19 +39,46 @@ npm install flex-range
 ```js
 import { FlexRange } from 'flex-range';
 
-const slider = new FlexRange('#slider');
-```
-
-or with options:
-
-```js
+// initialize slider instance
 const slider = new FlexRange('#slider', {
     min: 0,
     max: 100,
     from: 10,
-    to: 80,
+    to: 90,
+});
+
+// update slider values
+slider.update({ from: 20, to: 80 });
+
+// listen to changes
+slider.on('change', (event) => {
+    console.log(event.values);
 });
 ```
+
+> Note: to prevent the slider from firing the `change` event when calling `update()`, set the second argument to `false` (e.g. `slider.update({ from: 1 }, false)`).
+
+Options:
+
+| Name | Description          |
+| ---- | -------------------- |
+| min  | minimum value        |
+| max  | maximum value        |
+| from | initial value 'from' |
+| to   | initial value 'to'   |
+
+Methods:
+
+| Name     | Description                      |
+| -------- | -------------------------------- |
+| update() | update one or more slider values |
+| on()     | listen to events                 |
+
+Events:
+
+| Name   | Description                              |
+| ------ | ---------------------------------------- |
+| change | fires when the slider values get updated |
 
 ### SCSS:
 
@@ -47,10 +92,10 @@ Example for overriding variables:
 
 ```scss
 @use 'flex-range' with (
-    $fr-primary-color: #4285f4,
-    $fr-bar-width: 0.25rem,
+    $fr-primary-color: #0150ce,
+    $fr-bar-width: 0.2rem,
     $fr-handle-size: 1.25rem,
-    $fr-handle-color: #4285f4,
+    $fr-handle-color: #0150ce,
     $fr-handle-border: none,
 );
 ```
@@ -75,6 +120,8 @@ $fr-handle-border: 0.2rem solid $fr-handle-border-color !default;
 $fr-handle-border-radius: 50% !default;
 $fr-handle-shadow: none !default;
 ```
+
+---
 
 ## License
 

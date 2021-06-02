@@ -31,19 +31,27 @@
     <script type="module">
         import { FlexRange } from './../src/js/FlexRange.js';
 
-        const slider = new FlexRange('#slider');
+        // initialize slider instance
+        const slider = new FlexRange('#slider', { min: 0, max: 100, from: 10, to: 90 });
 
+        // update slider values
+        slider.update({ from: 20, to: 80 });
+
+        // get input elements
         const inputFrom = document.querySelector('#inputFrom');
         const inputTo = document.querySelector('#inputTo');
 
-        inputFrom.value = slider.options.from;
-        inputTo.value = slider.options.to;
+        // set input values to slider values
+        inputFrom.value = slider.values.from;
+        inputTo.value = slider.values.to;
 
+        // listen to changes
         slider.on('change', event => {
             inputFrom.value = event.values.from;
             inputTo.value = event.values.to;
         });
 
+        // update slider values when text inputs change
         inputFrom.addEventListener('change', event => slider.update({ from: inputFrom.value }));
         inputTo.addEventListener('change', event => slider.update({ to: inputTo.value }));
 
@@ -55,13 +63,11 @@
     <div class="wrapper">
         <div class="first-child"></div>
 
-        <input id="slider" type="range" data-min="10" data-max="30">
+        <input id="slider" type="range">
 
         <div>
             <input type="number" id="inputFrom"> — <input type="number" id="inputTo">
         </div>
-
-        <div class="last-child"></div>
     </div>
 </body>
 

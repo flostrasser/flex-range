@@ -8,7 +8,7 @@ export class FlexRange {
     updateType = null;
     events = {};
 
-    options = {
+    values = {
         min: 0,
         max: 100,
         from: null,
@@ -25,23 +25,23 @@ export class FlexRange {
         this.originalElement = originalElement;
 
         // assign options
-        setOptions(this, options);
+        assignOptions(this, options);
 
         // initialize the slider
         hideOriginalEl(this.originalElement);
         this.sliderElement = createSliderElements(this.originalElement);
-        updateElements(this.sliderElement, this.options);
+        updateElements(this.sliderElement, this.values);
         createEventListeners(this);
     }
 
     // update the slider with new values
     update(options, triggerEvent = true) {
-        if (options.from && this.options.from != options.from) this.updateType = 'from';
-        if (options.to && this.options.to != options.to) this.updateType = 'to';
+        if (options.from && this.values.from != options.from) this.updateType = 'from';
+        if (options.to && this.values.to != options.to) this.updateType = 'to';
 
-        Object.assign(this.options, options);
+        assignValues(this.values, options);
         constrainOptions(this);
-        updateElements(this.sliderElement, this.options);
+        updateElements(this.sliderElement, this.values);
         if (triggerEvent) publishEvent('update', this);
         return this;
     }
@@ -54,33 +54,33 @@ export class FlexRange {
 
 function constrainOptions(slider) {
     // prevent left handle from exceeding min/max values
-    if (slider.options.from < slider.options.min) slider.options.from = slider.options.min;
-    if (slider.options.from > slider.options.max) slider.options.from = slider.options.max;
+    if (slider.values.from < slider.values.min) slider.values.from = slider.values.min;
+    if (slider.values.from > slider.values.max) slider.values.from = slider.values.max;
 
     // prevent overlapping of handles
-    if (slider.options.from > slider.options.to && slider.updateType == 'from') slider.options.from = slider.options.to;
-    if (slider.options.to < slider.options.from && slider.updateType == 'to') slider.options.to = slider.options.from;
+    if (slider.values.from > slider.values.to && slider.updateType == 'from') slider.values.from = slider.values.to;
+    if (slider.values.to < slider.values.from && slider.updateType == 'to') slider.values.to = slider.values.from;
 
     // prevent right handle from exceeding min/max values
-    if (slider.options.to > slider.options.max) slider.options.to = slider.options.max;
-    if (slider.options.to < slider.options.min) slider.options.to = slider.options.min;
+    if (slider.values.to > slider.values.max) slider.values.to = slider.values.max;
+    if (slider.values.to < slider.values.min) slider.values.to = slider.values.min;
 }
 
-function setOptions(slider, options) {
-    assignOptions(slider.options, slider.originalElement.dataset)
-    assignOptions(slider.options, options);
+function assignOptions(slider, options) {
+    assignValues(slider.values, slider.originalElement.dataset)
+    assignValues(slider.values, options);
 
-    if (!('from' in slider.originalElement.dataset) && !('from' in options)) slider.options.from = slider.options.min;
-    if (!('to' in slider.originalElement.dataset) && !('to' in options)) slider.options.to = slider.options.max;
+    if (!('from' in slider.originalElement.dataset) && !('from' in options)) slider.values.from = slider.values.min;
+    if (!('to' in slider.originalElement.dataset) && !('to' in options)) slider.values.to = slider.values.max;
 
     constrainOptions(slider);
 
-    slider.preciseValues.from = slider.options.from;
-    slider.preciseValues.to = slider.options.to;
+    slider.preciseValues.from = slider.values.from;
+    slider.preciseValues.to = slider.values.to;
 }
 
-function assignOptions(targetOptions, sourceOptions) {
-    // assign number options
+function assignValues(targetOptions, sourceOptions) {
+    // assign number values
     for (const item of numberOptions) {
         if (item in sourceOptions) targetOptions[item] = Number(sourceOptions[item]);
     }
@@ -100,7 +100,7 @@ function publishEvent(event, slider) {
     if (!listeners) return;
 
     for (let listener of listeners) {
-        listener({ values: slider.options });
+        listener({ values: slider.values });
     }
 }
 
@@ -135,7 +135,7 @@ function createEventListeners(slider) {
     let targetHandle, mouseStartPosX, deltaX, mouseToHandleOffset, sliderBoundingBox, sliderWidth, maxOffset, handleWidth, leftHandle, rightHandle;
 
     const getHandlePos = (pixelValue) => {
-        return mapRange(pixelValue, 0, sliderWidth, slider.options.min, slider.options.max);
+        return mapRange(pixelValue, 0, sliderWidth, slider.values.min, slider.values.max);
     }
 
     const getHandleOffset = (mouseX) => {
@@ -146,7 +146,7 @@ function createEventListeners(slider) {
         const isOutOfSliderConstrainLeft = (mouseX < sliderBoundingBox.x + mouseToHandleOffset - handleWidth / 2);
         const isOutOfSliderConstrainRight = (mouseX > sliderBoundingBox.x + sliderWidth - mouseToHandleOffset + handleWidth / 2);
 
-        if (isOutOfSliderConstrainLeft) handleOffset = slider.options.min;
+        if (isOutOfSliderConstrainLeft) handleOffset = slider.values.min;
         if (isOutOfSliderConstrainRight) handleOffset = maxOffset;
 
         if (targetHandle.classList.contains('from') && mouseX > rightHandle.getBoundingClientRect().x + mouseToHandleOffset) {
