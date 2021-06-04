@@ -160,7 +160,8 @@ function createEventListeners(slider) {
     }
 
     const mouseDragHandler = event => {
-        const handleOffset = getHandleOffset(event.clientX);
+        const clientX = event.type == 'touchmove' ? event.touches[0].clientX : event.clientX;
+        const handleOffset = getHandleOffset(clientX);
         const handleOffsetFixed = toFixed(handleOffset, 2);
 
         if (targetHandle.classList.contains('from')) {
@@ -175,17 +176,20 @@ function createEventListeners(slider) {
         slider.sliderElement.classList.add('dragging');
 
         publishEvent('change', slider);
-        mouseStartPosX = event.clientX;
+        mouseStartPosX = clientX;
     }
 
     const mouseUpHandler = () => {
         // stop dragging when mouse is released
         document.removeEventListener('mousemove', mouseDragHandler);
+        document.removeEventListener('touchmove', mouseDragHandler);
         slider.sliderElement.classList.remove('dragging');
     }
 
     const mouseDownHandler = event => {
-        mouseStartPosX = event.clientX;
+        event.preventDefault();
+        const clientX = event.type == 'touchstart' ? event.touches[0].clientX : event.clientX;
+        mouseStartPosX = clientX;
         targetHandle = event.target;
         leftHandle = Array.from(handles).filter(handle => handle.classList.contains('from'))[0];
         rightHandle = Array.from(handles).filter(handle => handle.classList.contains('to'))[0];
@@ -199,10 +203,17 @@ function createEventListeners(slider) {
         targetHandle.classList.add('handle-active');
 
         document.addEventListener('mousemove', mouseDragHandler);
+        document.addEventListener('touchmove', mouseDragHandler);
+
         document.addEventListener('mouseup', mouseUpHandler);
+        document.addEventListener('touchend', mouseUpHandler);
+        document.addEventListener('touchcancel', mouseUpHandler);
     }
 
-    handles.forEach(handle => handle.addEventListener('mousedown', mouseDownHandler));
+    handles.forEach(handle => {
+        handle.addEventListener('mousedown', mouseDownHandler);
+        handle.addEventListener('touchstart', mouseDownHandler);
+    });
 }
 
 function hideOriginalEl(targetEl) {

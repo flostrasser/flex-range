@@ -2,11 +2,7 @@
 
 A flexible vanilla JavaScript range slider
 
-> Note: This is an experimental project. Don't use it in production.
-
-Known issues:
-
--   moving the slider handles is currently not working on touch devices.
+> Note: This is an experimental project. Its not recommended to use it in production.
 
 ### [CodePen Demo](https://codepen.io/flostrasser/pen/mdWBMrg)
 
