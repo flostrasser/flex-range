@@ -35,14 +35,19 @@ export class FlexRange {
     }
 
     // update the slider with new values
-    update(options, triggerEvent = true) {
+    update(options, triggerEvents = true) {
         if (options.from && this.values.from != options.from) this.updateType = 'from';
         if (options.to && this.values.to != options.to) this.updateType = 'to';
 
         assignValues(this.values, options);
         constrainOptions(this);
         updateElements(this.sliderElement, this.values);
-        if (triggerEvent) publishEvent('update', this);
+
+        if (triggerEvents) {
+            publishEvent('change', this);
+            publishEvent('update', this);
+        }
+
         return this;
     }
 
@@ -166,11 +171,11 @@ function createEventListeners(slider) {
 
         if (targetHandle.classList.contains('from')) {
             slider.preciseValues.from = handleOffset;
-            slider.update({ from: handleOffsetFixed });
+            slider.update({ from: handleOffsetFixed }, false);
 
         } else if (targetHandle.classList.contains('to')) {
             slider.preciseValues.to = handleOffset;
-            slider.update({ to: handleOffsetFixed });
+            slider.update({ to: handleOffsetFixed }, false);
         }
 
         slider.sliderElement.classList.add('dragging');
