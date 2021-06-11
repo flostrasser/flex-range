@@ -72,9 +72,10 @@ Methods:
 
 Events:
 
-| Name   | Description                              |
-| ------ | ---------------------------------------- |
-| change | fires when the slider values get updated |
+| Name   | Description                                                                          |
+| ------ | ------------------------------------------------------------------------------------ |
+| change | fires when the slider values get changed with the handles or updated with `update()` |
+| update | fires only when the slider values get updated with `update()`                        |
 
 ### SCSS:
 
