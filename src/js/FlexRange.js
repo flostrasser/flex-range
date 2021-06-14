@@ -7,15 +7,16 @@ export class FlexRange {
     sliderElement = null;
     updateType = null;
     events = {};
+    initialValues = {};
+    preciseValues = {};
+    values = {};
 
-    values = {
+    initialValues = {
         min: 0,
         max: 100,
         from: null,
         to: null,
     };
-
-    preciseValues = {};
 
     constructor(target, options = {}) {
         // get the target element
@@ -25,12 +26,14 @@ export class FlexRange {
         this.originalElement = originalElement;
 
         // assign options
-        assignOptions(this, options);
+        assignInitialValues(this, options);
+
+        Object.assign(this.values, this.initialValues);
 
         // initialize the slider
         hideOriginalEl(this.originalElement);
         this.sliderElement = createSliderElements(this.originalElement);
-        updateElements(this.sliderElement, this.values);
+        updateElements(this.sliderElement, this.initialValues);
         createEventListeners(this);
     }
 
@@ -40,7 +43,7 @@ export class FlexRange {
         if (options.to && this.values.to != options.to) this.updateType = 'to';
 
         assignValues(this.values, options);
-        constrainOptions(this);
+        constrainValues(this, this.values);
         updateElements(this.sliderElement, this.values);
 
         if (triggerEvents) {
@@ -55,33 +58,43 @@ export class FlexRange {
     on(event, listener) {
         subscribeEvent(event, listener, this);
     }
+
+    // reset slider values
+    reset() {
+        this.update(this.initialValues, false);
+
+        publishEvent('change', this);
+        publishEvent('reset', this);
+
+        return this;
+    }
 }
 
-function constrainOptions(slider) {
+function constrainValues(slider, values) {
     // prevent left handle from exceeding min/max values
-    if (slider.values.from < slider.values.min) slider.values.from = slider.values.min;
-    if (slider.values.from > slider.values.max) slider.values.from = slider.values.max;
+    if (values.from < values.min) values.from = values.min;
+    if (values.from > values.max) values.from = values.max;
 
     // prevent overlapping of handles
-    if (slider.values.from > slider.values.to && slider.updateType == 'from') slider.values.from = slider.values.to;
-    if (slider.values.to < slider.values.from && slider.updateType == 'to') slider.values.to = slider.values.from;
+    if (values.from > values.to && slider.updateType == 'from') values.from = values.to;
+    if (values.to < values.from && slider.updateType == 'to') values.to = values.from;
 
     // prevent right handle from exceeding min/max values
-    if (slider.values.to > slider.values.max) slider.values.to = slider.values.max;
-    if (slider.values.to < slider.values.min) slider.values.to = slider.values.min;
+    if (values.to > values.max) values.to = values.max;
+    if (values.to < values.min) values.to = values.min;
 }
 
-function assignOptions(slider, options) {
-    assignValues(slider.values, slider.originalElement.dataset)
-    assignValues(slider.values, options);
+function assignInitialValues(slider, options) {
+    assignValues(slider.initialValues, slider.originalElement.dataset)
+    assignValues(slider.initialValues, options);
 
-    if (!('from' in slider.originalElement.dataset) && !('from' in options)) slider.values.from = slider.values.min;
-    if (!('to' in slider.originalElement.dataset) && !('to' in options)) slider.values.to = slider.values.max;
+    if (!('from' in slider.originalElement.dataset) && !('from' in options)) slider.initialValues.from = slider.initialValues.min;
+    if (!('to' in slider.originalElement.dataset) && !('to' in options)) slider.initialValues.to = slider.initialValues.max;
 
-    constrainOptions(slider);
+    constrainValues(slider, slider.initialValues);
 
-    slider.preciseValues.from = slider.values.from;
-    slider.preciseValues.to = slider.values.to;
+    slider.preciseValues.from = slider.initialValues.from;
+    slider.preciseValues.to = slider.initialValues.to;
 }
 
 function assignValues(targetOptions, sourceOptions) {
@@ -218,6 +231,14 @@ function createEventListeners(slider) {
     handles.forEach(handle => {
         handle.addEventListener('mousedown', mouseDownHandler);
         handle.addEventListener('touchstart', mouseDownHandler);
+    });
+
+    // reset slider on form reset
+    const closestForm = slider.sliderElement.closest('form');
+    if (!closestForm) return;
+
+    closestForm.addEventListener('reset', e => {
+        slider.reset();
     });
 }
 

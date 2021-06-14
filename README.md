@@ -65,17 +65,19 @@ Options:
 
 Methods:
 
-| Name     | Description                      |
-| -------- | -------------------------------- |
-| update() | update one or more slider values |
-| on()     | listen to events                 |
+| Name     | Description                            |
+| -------- | -------------------------------------- |
+| update() | update one or more slider values       |
+| reset()  | reset the slider to its initial values |
+| on()     | listen to events                       |
 
 Events:
 
-| Name   | Description                                                                          |
-| ------ | ------------------------------------------------------------------------------------ |
-| change | fires when the slider values get changed with the handles or updated with `update()` |
-| update | fires only when the slider values get updated with `update()`                        |
+| Name   | Description                                                   |
+| ------ | ------------------------------------------------------------- |
+| change | fires when a slider value changes                             |
+| update | fires only when the slider values get updated with `update()` |
+| reset  | fires on form reset or when `reset()` is called               |
 
 ### SCSS:
 

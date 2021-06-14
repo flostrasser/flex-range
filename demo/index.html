@@ -18,6 +18,7 @@
             width: 70vw;
             display: grid;
             gap: 2rem;
+            justify-items: start;
         }
 
         input[type=number] {
@@ -54,21 +55,21 @@
         // update slider values when text inputs change
         inputFrom.addEventListener('change', event => slider.update({ from: inputFrom.value }));
         inputTo.addEventListener('change', event => slider.update({ to: inputTo.value }));
-
     </script>
 </head>
 
 <body>
-
-    <div class="wrapper">
+    <form class="wrapper">
         <div class="first-child"></div>
 
         <input id="slider" type="range">
 
         <div>
-            <input type="number" id="inputFrom"> — <input type="number" id="inputTo">
+            <input type="number" id="inputFrom" value="10"> — <input type="number" id="inputTo" value="90">
         </div>
-    </div>
+
+        <button type="reset">reset</button>
+    </form>
 </body>
 
 </html>
