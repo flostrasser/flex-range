@@ -230,7 +230,7 @@ function createEventListeners(slider) {
 
     handles.forEach(handle => {
         handle.addEventListener('mousedown', mouseDownHandler);
-        handle.addEventListener('touchstart', mouseDownHandler);
+        handle.addEventListener('touchstart', mouseDownHandler, { passive: false });
     });
 
     // reset slider on form reset

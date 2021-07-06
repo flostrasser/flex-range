@@ -1,6 +1,6 @@
 {
   "name": "flex-range",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A vanilla JavaScript range slider",
   "module": "./src/js/FlexRange.js",
   "exports": {
