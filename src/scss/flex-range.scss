@@ -10,6 +10,7 @@ $fr-bar-range-color: $fr-primary-color !default;
 
 // handle variables
 $fr-handle-size: 2rem !default;
+$fr-handle-size-pointer-coarse: 2.5rem !default;
 $fr-handle-color: white !default;
 $fr-handle-border-color: $fr-primary-color !default;
 $fr-handle-active-color: $fr-primary-color !default;
@@ -69,6 +70,15 @@ $fr-handle-shadow: none !default;
 
         &.handle-active {
             z-index: 2;
+        }
+    }
+
+    @media (pointer: coarse) {
+        height: $fr-handle-size-pointer-coarse;
+
+        .range-slider-handle {
+            height: $fr-handle-size-pointer-coarse;
+            width: $fr-handle-size-pointer-coarse;
         }
     }
 
