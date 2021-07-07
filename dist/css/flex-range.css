@@ -44,6 +44,15 @@
 .range-slider .range-slider-handle.handle-active {
   z-index: 2;
 }
+@media (pointer: coarse) {
+  .range-slider {
+    height: 2.5rem;
+  }
+  .range-slider .range-slider-handle {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+}
 .range-slider:not(.dragging) .range-slider-handle:hover {
   background-color: #545454;
 }

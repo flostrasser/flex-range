@@ -112,6 +112,7 @@ $fr-bar-range-color: $fr-primary-color !default;
 
 // handle variables
 $fr-handle-size: 2rem !default;
+$fr-handle-size-pointer-coarse: 2.5rem !default;
 $fr-handle-color: white !default;
 $fr-handle-border-color: $fr-primary-color !default;
 $fr-handle-active-color: $fr-primary-color !default;
